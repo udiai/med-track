@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Medication Tracker</title>
+  <title>My Med Track</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,7 +11,7 @@
     }
     .container {
       background-color: white;
-      max-width: 600px;
+      max-width: 700px;
       margin: auto;
       border-radius: 10px;
       padding: 20px;
@@ -71,7 +71,10 @@
 </head>
 <body>
   <div class="container">
-    <h1>❤️ Medication Tracker</h1>
+    <h1>❤️ My Med Track</h1>
+
+    <label for="patient">Patient Name:</label>
+    <input type="text" id="patient" placeholder="Enter patient name">
 
     <label for="medication">Select Medication:</label>
     <select id="medication">
@@ -81,7 +84,7 @@
     </select>
     <button id="add-medication">+ Add New Medication</button>
 
-    <label>Date & Time & Dose:</label>
+    <label>Date, Time & Dose:</label>
     <div style="display: flex; gap: 5px;">
       <input type="date" id="date">
       <input type="time" id="time">
@@ -92,22 +95,24 @@
     <textarea id="note"></textarea>
     <button id="save-entry">Save Entry</button>
 
-    <h2>Weekly Goals</h2>
+    <h2>This Week Goal (mg)</h2>
     <label for="goal-medication">Medication:</label>
     <select id="goal-medication"></select>
-    <label for="goal">Goal:</label>
-    <input type="text" id="goal">
+    <label for="goal">This Week Goal (mg):</label>
+    <input type="number" id="goal">
     <button id="save-goal">Save Goal</button>
 
     <h2>Summary</h2>
     <div class="export-buttons">
       <button onclick="exportPDF()">Export PDF</button>
       <button onclick="exportExcel()">Export Excel</button>
+      <button onclick="showGraph()">Graph View</button>
     </div>
 
     <table id="summary-table">
       <thead>
         <tr>
+          <th>Patient</th>
           <th>Date</th>
           <th>Time</th>
           <th>Medication</th>
@@ -125,18 +130,19 @@
     const entries = [];
 
     document.getElementById('save-entry').addEventListener('click', () => {
+      const patient = document.getElementById('patient').value;
       const medication = document.getElementById('medication').value;
       const date = document.getElementById('date').value;
       const time = document.getElementById('time').value;
       const dose = document.getElementById('dose').value;
       const note = document.getElementById('note').value;
 
-      if (!medication || !date || !time || !dose) {
+      if (!patient || !medication || !date || !time || !dose) {
         alert("Please fill in all fields.");
         return;
       }
 
-      const entry = { medication, date, time, dose, note };
+      const entry = { patient, medication, date, time, dose, note };
       entries.push(entry);
       updateSummary();
       fillPreviousEntry(entry);
@@ -147,6 +153,7 @@
       summaryBody.innerHTML = '';
       entries.forEach(entry => {
         const row = `<tr>
+          <td>${entry.patient}</td>
           <td>${entry.date}</td>
           <td>${entry.time}</td>
           <td>${entry.medication}</td>
@@ -158,6 +165,7 @@
     }
 
     function fillPreviousEntry(entry) {
+      document.getElementById('patient').value = entry.patient;
       document.getElementById('medication').value = entry.medication;
       document.getElementById('date').value = entry.date;
       document.getElementById('time').value = entry.time;
@@ -172,7 +180,10 @@
     function exportExcel() {
       alert("Excel export not implemented yet.");
     }
+
+    function showGraph() {
+      alert("Graph View not implemented yet. This will use Chart.js or similar to show data by medication, date/week/total, etc.");
+    }
   </script>
 </body>
 </html>
-
