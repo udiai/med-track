@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Medication Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e6f7ff;
+      margin: 20px;
+    }
+    .container {
+      background-color: white;
+      max-width: 600px;
+      margin: auto;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #0077b6;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #023e8a;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px;
+      background-color: #00b4d8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0077b6;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #caf0f8;
+    }
+    .export-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .export-buttons button {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>❤️ Medication Tracker</h1>
+
+    <label for="medication">Select Medication:</label>
+    <select id="medication">
+      <option value="">--Choose Medication--</option>
+      <option value="Alprazolam">Alprazolam</option>
+      <option value="Lorazepam">Lorazepam</option>
+    </select>
+    <button id="add-medication">+ Add New Medication</button>
+
+    <label>Date & Time & Dose:</label>
+    <div style="display: flex; gap: 5px;">
+      <input type="date" id="date">
+      <input type="time" id="time">
+      <input type="number" id="dose" placeholder="Dose (mg)">
+    </div>
+
+    <label for="note">Note:</label>
+    <textarea id="note"></textarea>
+    <button id="save-entry">Save Entry</button>
+
+    <h2>Weekly Goals</h2>
+    <label for="goal-medication">Medication:</label>
+    <select id="goal-medication"></select>
+    <label for="goal">Goal:</label>
+    <input type="text" id="goal">
+    <button id="save-goal">Save Goal</button>
+
+    <h2>Summary</h2>
+    <div class="export-buttons">
+      <button onclick="exportPDF()">Export PDF</button>
+      <button onclick="exportExcel()">Export Excel</button>
+    </div>
+
+    <table id="summary-table">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Medication</th>
+          <th>Dose (mg)</th>
+          <th>Note</th>
+        </tr>
+      </thead>
+      <tbody id="summary-body">
+        <!-- Entries will appear here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const entries = [];
+
+    document.getElementById('save-entry').addEventListener('click', () => {
+      const medication = document.getElementById('medication').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const dose = document.getElementById('dose').value;
+      const note = document.getElementById('note').value;
+
+      if (!medication || !date || !time || !dose) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const entry = { medication, date, time, dose, note };
+      entries.push(entry);
+      updateSummary();
+      fillPreviousEntry(entry);
+    });
+
+    function updateSummary() {
+      const summaryBody = document.getElementById('summary-body');
+      summaryBody.innerHTML = '';
+      entries.forEach(entry => {
+        const row = `<tr>
+          <td>${entry.date}</td>
+          <td>${entry.time}</td>
+          <td>${entry.medication}</td>
+          <td>${entry.dose}</td>
+          <td>${entry.note}</td>
+        </tr>`;
+        summaryBody.innerHTML += row;
+      });
+    }
+
+    function fillPreviousEntry(entry) {
+      document.getElementById('medication').value = entry.medication;
+      document.getElementById('date').value = entry.date;
+      document.getElementById('time').value = entry.time;
+      document.getElementById('dose').value = entry.dose;
+      document.getElementById('note').value = entry.note;
+    }
+
+    function exportPDF() {
+      alert("PDF export not implemented yet.");
+    }
+
+    function exportExcel() {
+      alert("Excel export not implemented yet.");
+    }
+  </script>
+</body>
+</html>
+
